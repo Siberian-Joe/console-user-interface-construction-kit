@@ -24,9 +24,8 @@ public abstract class BaseMenu(string title) : IMenu
 
     public virtual void Render()
     {
+        VisibleItemsCount = Console.WindowHeight - 4;
         var itemsToRender = Math.Min(Options.Count - TopVisibleIndex, VisibleItemsCount);
-
-        VisibleItemsCount = Console.WindowHeight - 2;
 
         Console.Clear();
         Console.WriteLine(Title);
