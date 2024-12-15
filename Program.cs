@@ -1,18 +1,25 @@
-﻿using ConsoleUserInterfaceConstructionKit;
-using ConsoleUserInterfaceConstructionKit.MenuOptions;
-using ConsoleUserInterfaceConstructionKit.Menus;
+﻿using ConsoleUserInterfaceConstructionKit.Builders;
+using ConsoleUserInterfaceConstructionKit.Core;
+using ConsoleUserInterfaceConstructionKit.Navigation;
 
-var mainMenu = new DefaultMenu("Main Menu");
-var settingsMenu = new DefaultMenu("Settings Menu");
-var menuManager = new MenuManager();
-var volume = 50;
+var menuNavigator = new MenuNavigator();
+var menuBuilder = new MenuBuilder(menuNavigator);
 
-mainMenu.AddOption(new ActionMenuOption("Start Game", () => Console.WriteLine("Game started")));
-mainMenu.AddOption(new ActionMenuOption("Settings", () => menuManager.NavigateTo(settingsMenu)));
-mainMenu.AddOption(new ActionMenuOption("Exit", () => Environment.Exit(0)));
+var volume = new Bindable<int>(50);
 
-settingsMenu.AddOption(new IntMenuOption("Volume", volume, updateAction: value => { volume = value; }, 0, 100));
-settingsMenu.AddOption(new ActionMenuOption("Back", () => menuManager.NavigateBack()));
+var mainMenu = menuBuilder
+    .SetTitle("Main Menu")
+    .AddOption("Start Game", () => Console.WriteLine("Game started"))
+    .AddSubmenu("Settings", settingsBuilder =>
+    {
+        settingsBuilder
+            .SetTitle("Settings Menu")
+            .AddToggleOption("Mute", () => volume.Value == 0, isMuted => volume.Value = isMuted ? 0 : 50)
+            .AddIntOption("Volume", volume, 0, 100)
+            .AddOption("Back", () => menuNavigator.NavigateBack());
+    })
+    .AddOption("Exit", () => Environment.Exit(0))
+    .Build();
 
-menuManager.NavigateTo(mainMenu);
-menuManager.Run();
+menuNavigator.NavigateTo(mainMenu);
+menuNavigator.Run();

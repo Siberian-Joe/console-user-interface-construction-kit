@@ -1,15 +1,12 @@
-﻿using ConsoleUserInterfaceConstructionKit.Menus.Interfaces;
+﻿using ConsoleUserInterfaceConstructionKit.Core.Interfaces;
 
-namespace ConsoleUserInterfaceConstructionKit;
+namespace ConsoleUserInterfaceConstructionKit.Navigation;
 
-public class MenuManager
+public class MenuNavigator
 {
     private readonly Stack<IMenu> _menuStack = new();
 
-    public void NavigateTo(IMenu menu)
-    {
-        _menuStack.Push(menu);
-    }
+    public void NavigateTo(IMenu menu) => _menuStack.Push(menu);
 
     public void NavigateBack()
     {
@@ -19,7 +16,7 @@ public class MenuManager
 
     public void Run()
     {
-        while (_menuStack.Any())
+        while (_menuStack.Count != 0)
         {
             var currentMenu = _menuStack.Peek();
             currentMenu.Render();

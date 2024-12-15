@@ -1,6 +1,4 @@
-﻿using ConsoleUserInterfaceConstructionKit.MenuOptions.Interfaces;
-
-namespace ConsoleUserInterfaceConstructionKit.Menus.Interfaces;
+﻿namespace ConsoleUserInterfaceConstructionKit.Core.Interfaces;
 
 public interface IMenu
 {

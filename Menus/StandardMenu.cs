@@ -1,8 +1,8 @@
-﻿using ConsoleUserInterfaceConstructionKit.Menus.Abstracts;
+﻿using ConsoleUserInterfaceConstructionKit.Core.Abstracts;
 
 namespace ConsoleUserInterfaceConstructionKit.Menus;
 
-public class DefaultMenu(string title) : BaseMenu(title)
+public class StandardMenu(string title) : MenuBase(title)
 {
     public override void HandleInput(ConsoleKey key)
     {
