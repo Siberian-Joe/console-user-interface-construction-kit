@@ -1,67 +1,52 @@
-﻿using ConsoleUserInterfaceConstructionKit.Core;
-using ConsoleUserInterfaceConstructionKit.Core.Interfaces;
+﻿using ConsoleUserInterfaceConstructionKit.Core.Interfaces;
 using ConsoleUserInterfaceConstructionKit.MenuOptions;
 using ConsoleUserInterfaceConstructionKit.Menus;
 using ConsoleUserInterfaceConstructionKit.Navigation;
 
 namespace ConsoleUserInterfaceConstructionKit.Builders;
 
-public class MenuBuilder(MenuNavigator menuNavigator) : IMenuBuilder
+public class MenuBuilder(MenuNavigator navigator) : IMenuBuilder
 {
-    private const string DefaultMenuTitle = "Menu";
-
-
     private readonly List<IMenuOption> _options = new();
 
-    private string _title = DefaultMenuTitle;
+    private string _title = string.Empty;
 
-    public IMenuBuilder SetTitle(string title)
+    public IMenuBuilder Title(string title)
     {
         _title = title;
         return this;
     }
 
-    public IMenuBuilder AddOption(string name, Action action)
+    public IMenuBuilder Add<T>(Action<T> configure) where T : IOptionBuilder, new()
     {
-        _options.Add(new ActionOption(name, action));
+        var builder = new T();
+
+        configure(builder);
+        _options.Add(builder.Build());
+
         return this;
     }
 
-    public IMenuBuilder AddIntOption(string name, Bindable<int> bindable, int? minValue = null, int? maxValue = null)
+    public IMenuBuilder AddSubmenu(string title, Action<IMenuBuilder> configureSubmenu)
     {
-        _options.Add(new IntOption(name, bindable, minValue, maxValue));
+        var submenuBuilder = new MenuBuilder(navigator);
+
+        configureSubmenu(submenuBuilder);
+
+        var submenu = submenuBuilder.Build();
+
+        _options.Add(new ActionOption(title, () => navigator.NavigateTo(submenu)));
+
         return this;
     }
 
-    public IMenuBuilder AddToggleOption(string name, Bindable<bool> bindable)
-    {
-        _options.Add(new ToggleOption(name, bindable));
-        return this;
-    }
-
-    public IMenuBuilder AddToggleOption(string name, Func<bool> stateGetter, Action<bool> stateSetter)
-    {
-        _options.Add(new ToggleOption(name, stateGetter, stateSetter));
-        return this;
-    }
-
-    public IMenuBuilder AddSubmenu(string name, Action<IMenuBuilder> submenuBuilder)
-    {
-        var submenuBuilderInstance = new MenuBuilder(menuNavigator);
-        submenuBuilder(submenuBuilderInstance);
-        var submenu = submenuBuilderInstance.Build();
-
-        _options.Add(new ActionOption(name, () => menuNavigator.NavigateTo(submenu)));
-        return this;
-    }
 
     public IMenu Build()
     {
         var menu = new StandardMenu(_title);
+
         foreach (var option in _options)
-        {
             menu.AddOption(option);
-        }
 
         return menu;
     }
