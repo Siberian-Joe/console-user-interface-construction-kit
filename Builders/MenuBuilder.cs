@@ -1,4 +1,6 @@
-﻿using ConsoleUserInterfaceConstructionKit.Core.Interfaces;
+﻿using ConsoleUserInterfaceConstructionKit.Builders.Interfaces;
+using ConsoleUserInterfaceConstructionKit.Core.Interfaces;
+using ConsoleUserInterfaceConstructionKit.Core.Utilities;
 using ConsoleUserInterfaceConstructionKit.MenuOptions;
 using ConsoleUserInterfaceConstructionKit.Menus;
 using ConsoleUserInterfaceConstructionKit.Navigation;
@@ -8,12 +10,11 @@ namespace ConsoleUserInterfaceConstructionKit.Builders;
 public class MenuBuilder(MenuNavigator navigator) : IMenuBuilder
 {
     private readonly List<IMenuOption> _options = new();
-
-    private string _title = string.Empty;
+    private readonly Required<string> _title = new();
 
     public IMenuBuilder Title(string title)
     {
-        _title = title;
+        _title.Value = title;
         return this;
     }
 
@@ -43,7 +44,7 @@ public class MenuBuilder(MenuNavigator navigator) : IMenuBuilder
 
     public IMenu Build()
     {
-        var menu = new StandardMenu(_title);
+        var menu = new StandardMenu(_title.Value);
 
         foreach (var option in _options)
             menu.AddOption(option);

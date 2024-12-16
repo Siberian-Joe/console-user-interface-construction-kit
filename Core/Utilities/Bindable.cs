@@ -1,4 +1,4 @@
-﻿namespace ConsoleUserInterfaceConstructionKit.Core;
+﻿namespace ConsoleUserInterfaceConstructionKit.Core.Utilities;
 
 public class Bindable<T>(T initialValue)
 {

@@ -12,15 +12,9 @@ public abstract class MenuBase(string title) : IMenu
 
     private static int VisibleItemsCount => Console.WindowHeight - 4;
 
-    public void AddOption(IMenuOption option)
-    {
-        Options.Add(option);
-    }
+    public void AddOption(IMenuOption option) => Options.Add(option);
 
-    public void RemoveOption(IMenuOption option)
-    {
-        Options.Remove(option);
-    }
+    public void RemoveOption(IMenuOption option) => Options.Remove(option);
 
     public virtual void Render()
     {

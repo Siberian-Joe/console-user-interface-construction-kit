@@ -1,6 +1,6 @@
 ﻿using ConsoleUserInterfaceConstructionKit.Core.Interfaces;
 
-namespace ConsoleUserInterfaceConstructionKit.Builders;
+namespace ConsoleUserInterfaceConstructionKit.Builders.Interfaces;
 
 public interface IOptionBuilder
 {

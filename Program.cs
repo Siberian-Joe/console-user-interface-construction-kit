@@ -1,11 +1,12 @@
 ﻿using ConsoleUserInterfaceConstructionKit.Builders;
-using ConsoleUserInterfaceConstructionKit.Core;
+using ConsoleUserInterfaceConstructionKit.Core.Utilities;
 using ConsoleUserInterfaceConstructionKit.Navigation;
 
 var menuNavigator = new MenuNavigator();
 var menuBuilder = new MenuBuilder(menuNavigator);
 
 var volume = new Bindable<int>(50);
+var path = new Bindable<string>(string.Empty);
 
 var mainMenu = menuBuilder
     .Title("Main Menu")
@@ -26,6 +27,10 @@ var mainMenu = menuBuilder
                     .Title("Volume")
                     .BindTo(volume)
                     .Range(0, 100))
+            .Add<FileMenuBuilder>(fileMenu => fileMenu
+                .Title("Test File")
+                .Navigator(menuNavigator)
+                .BindTo(path))
             .Add<ActionOptionBuilder>(action =>
                 action
                     .Title("Back")

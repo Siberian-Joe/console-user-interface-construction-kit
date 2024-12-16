@@ -1,16 +1,19 @@
-﻿using ConsoleUserInterfaceConstructionKit.Core.Interfaces;
+﻿using ConsoleUserInterfaceConstructionKit.Builders.Interfaces;
+using ConsoleUserInterfaceConstructionKit.Core.Interfaces;
+using ConsoleUserInterfaceConstructionKit.Core.Utilities;
 using ConsoleUserInterfaceConstructionKit.MenuOptions;
 
 namespace ConsoleUserInterfaceConstructionKit.Builders;
 
 public class ActionOptionBuilder : IOptionBuilder
 {
-    private string _title = string.Empty;
+    private readonly Required<string> _title = new();
+
     private Action? _action;
 
     public ActionOptionBuilder Title(string title)
     {
-        _title = title;
+        _title.Value = title;
         return this;
     }
 
@@ -20,5 +23,5 @@ public class ActionOptionBuilder : IOptionBuilder
         return this;
     }
 
-    public IMenuOption Build() => new ActionOption(_title, _action!);
+    public IMenuOption Build() => new ActionOption(_title.Value, _action!);
 }

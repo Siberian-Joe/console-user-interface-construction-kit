@@ -1,5 +1,5 @@
-﻿using ConsoleUserInterfaceConstructionKit.Core;
-using ConsoleUserInterfaceConstructionKit.Core.Abstracts;
+﻿using ConsoleUserInterfaceConstructionKit.Core.Abstracts;
+using ConsoleUserInterfaceConstructionKit.Core.Utilities;
 
 namespace ConsoleUserInterfaceConstructionKit.MenuOptions;
 
